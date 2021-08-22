@@ -1,7 +1,38 @@
 ﻿@page "/"
+@using TradingView.Blazor.Demo.Data
+@using TradingView.Blazor.Models
+@inject IJSRuntime JSRuntime
+@inject ChartService chartService
 
-<h1>Hello, world!</h1>
+<h1>TradingView.Blazor Demo</h1>
 
-Welcome to your new app.
+<TradingViewChart @ref=myChart />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+	// Define and load the chart
+	TradingViewChart? myChart;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		// Only on first render
+		if (!firstRender)
+			return;
+
+		// Load the data
+		ChartData data = new()
+		{
+			CandleData = chartService.GetSampleData(),
+			MarkerData = new(), // todo: NIY
+		};
+
+		// Optionally define options
+		ChartOptions options = new()
+		{
+			TimeScaleSecondsVisible = false
+		};
+
+		// Load the chart
+		if (myChart != null)
+			await myChart.LoadChartAsync(data, options);
+	}	
+}
