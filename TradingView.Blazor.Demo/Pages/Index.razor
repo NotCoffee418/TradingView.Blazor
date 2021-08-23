@@ -1,7 +1,6 @@
 ﻿@page "/"
 @using TradingView.Blazor.Demo.Data
 @using TradingView.Blazor.Models
-@inject IJSRuntime JSRuntime
 @inject ChartService chartService
 
 <h1>TradingView.Blazor Demo</h1>
@@ -28,7 +27,10 @@
 		// Optionally define options
 		ChartOptions options = new()
 		{
-			TimeScaleSecondsVisible = false
+			TimeScaleSecondsVisible = false,
+
+			// Setting width to a negative value makes the chart responsive
+			Width = -75,
 		};
 
 		// Load the chart

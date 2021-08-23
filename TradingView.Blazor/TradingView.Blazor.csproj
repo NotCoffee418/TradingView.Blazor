@@ -3,7 +3,21 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>Simple component for basic TradingView chart in Blazor supporting OHLC candle, volume and markers.</Description>
+    <PackageProjectUrl>https://github.com/NotCoffee418/TradingView.Blazor</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/NotCoffee418/TradingView.Blazor</RepositoryUrl>
+    <PackageTags>tradingview, charting-library</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Copyright>NotCoffee418</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
   
   <ItemGroup>

@@ -1,5 +1,9 @@
-export function loadChart(elementId, candleData, volumeData, markerData, chartOptions) {
-	var chartElement = document.getElementById(elementId);
+export function loadChart(chartElement, candleData, volumeData, markerData, chartOptions) {
+	if (chartElement == null) {
+		console.error("ChartElement was null. Please define a reference for your TradingViewChart element.");
+		return;
+    }
+
 	var chart = LightweightCharts.createChart(chartElement, {
 		// negative value subtracts from parent width, otherwise fixed width
 		width: chartOptions.width > 0 ?
@@ -61,13 +65,20 @@ export function loadChart(elementId, candleData, volumeData, markerData, chartOp
 	candleSeries.setMarkers(markerData);
 
 	// Force resize if applicable
+	var timerID;
 	if (chartOptions.width < 0)
+	{
+		// Set size on initial load
+		chart.resize(chartElement.parentElement.offsetWidth - (chartOptions.width*-1), chartOptions.height);
+
+		// Regular check
 		document.body.onresize = function () {
 			if (timerID) clearTimeout(timerID);
 			timerID = setTimeout(function () {
-				chart.resize(chartElement.parentElement.offsetWidth - chartoptions.width, chartoptions.height);
+				chart.resize(chartElement.parentElement.offsetWidth - (chartOptions.width*-1), chartOptions.height);
 			}, 200);
 		}
+    }
 
     // success
     return true

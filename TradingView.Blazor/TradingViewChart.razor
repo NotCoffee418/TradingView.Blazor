@@ -2,11 +2,10 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 
-<div class="tradingviewChart">
-    This Blazor component is defined in the <strong>TradingView.Blazor</strong> package.
-</div>
+<div @ref=ChartElement></div>
+
 @code {
-    public string ElementId { get; set; } = "tvChart-" + Guid.NewGuid();
+    public ElementReference ChartElement { get; set; }
 
     /// <summary>
     /// Load a chart
@@ -21,6 +20,6 @@
             options = new ChartOptions();
         
         ChartHelperInterop interop = new ChartHelperInterop(JSRuntime);
-        await interop.LoadChart(ElementId, data, options);
+        await interop.LoadChart(ChartElement, data, options);
     }
 }

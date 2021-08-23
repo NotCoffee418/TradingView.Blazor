@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace TradingView.Blazor
         /// <param name="data"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task LoadChart(string elementId, ChartData data, ChartOptions options)
+        public async Task LoadChart(ElementReference eleRef, ChartData data, ChartOptions options)
         {
             // Extract candle data
             var candleData = data.CandleData
@@ -67,7 +68,7 @@ namespace TradingView.Blazor
 
             var module = await moduleTask.Value;
             await module.InvokeVoidAsync("loadChart", 
-                elementId, candleData, volumeData, markerData, options);
+                eleRef, candleData, volumeData, markerData, options);
         }
 
         public async ValueTask DisposeAsync()
