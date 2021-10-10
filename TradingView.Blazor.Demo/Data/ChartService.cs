@@ -1,6 +1,8 @@
-﻿
-using CsvHelper;
+﻿using CsvHelper;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using TradingView.Blazor.Models;
 
 namespace TradingView.Blazor.Demo.Data;
