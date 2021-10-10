@@ -70,6 +70,3 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 
 ## Demo
 You can view the code to the demo's index page [here](https://github.com/NotCoffee418/TradingView.Blazor/blob/main/TradingView.Blazor.Demo/Pages/Index.razor).
-
-## Known issues
-- Markers are not implemented yet
