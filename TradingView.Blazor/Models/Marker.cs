@@ -13,10 +13,11 @@ namespace TradingView.Blazor.Models
         public Direction MarkerDirection { get; set; }
         public string Text { get; set; }
 
+
         public enum Direction
         {
-            Buy,
-            Sell,
+            Buy = 1,
+            Sell = 2,
         }
     }
 }

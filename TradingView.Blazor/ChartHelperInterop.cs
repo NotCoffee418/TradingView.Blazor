@@ -63,7 +63,8 @@ namespace TradingView.Blazor
                         options.MarkerBuyColor : options.MarkerSellColor,
                     shape = x.MarkerDirection == Marker.Direction.Buy ?
                         "arrowUp" : "arrowDown",
-                    text = x.Text
+                    text = x.Text,
+                    size = options.MarkerSize
                 });
 
             var module = await moduleTask.Value;

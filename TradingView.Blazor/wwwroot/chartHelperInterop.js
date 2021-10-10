@@ -2,14 +2,16 @@ export function loadChart(chartElement, candleData, volumeData, markerData, char
 	if (chartElement == null) {
 		console.error("ChartElement was null. Please define a reference for your TradingViewChart element.");
 		return;
-    }
+	}
 
+	// Prepare chart element
 	var chart = LightweightCharts.createChart(chartElement, {
-		// negative value subtracts from parent width, otherwise fixed width
+		// negative value handled by resize script
+		// note: keep width/height hard values above 0 or markers will break
 		width: chartOptions.width > 0 ?
-			chartElement.parentElement.offsetWidth - chartOptions.width :
-			chartOptions.width,
-		height: chartOptions.height,
+			chartOptions.width : 0,
+		height: chartOptions.height > 0 ?
+			chartOptions.height : 0,
 		layout: {
 			backgroundColor: chartOptions.layoutBackgroundColor,
 			textColor: chartOptions.layoutTextColor,
@@ -38,12 +40,11 @@ export function loadChart(chartElement, candleData, volumeData, markerData, char
 	// Define candle options
 	// Define chart layout
 	var candleSeries = chart.addCandlestickSeries({
-		upColor: 'rgba(255, 144, 0, 1)',
-		downColor: '#000',
-		borderDownColor: 'rgba(255, 144, 0, 1)',
-		borderUpColor: 'rgba(255, 144, 0, 1)',
-		wickDownColor: 'rgba(255, 144, 0, 1)',
-		wickUpColor: 'rgba(255, 144, 0, 1)',
+		upColor: 'rgb(38,166,154)',
+		downColor: 'rgb(255,82,82)',
+		wickUpColor: 'rgb(38,166,154)',
+		wickDownColor: 'rgb(255,82,82)',
+		borderVisible: true,
 	});
 
 	// Define volume for chart layout

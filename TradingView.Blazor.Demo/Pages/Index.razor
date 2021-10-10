@@ -21,7 +21,7 @@
 		ChartData data = new()
 		{
 			CandleData = chartService.GetSampleData(),
-			MarkerData = new(), // todo: NIY
+			MarkerData = chartService.GetSampleMarkers()
 		};
 
 		// Optionally define options

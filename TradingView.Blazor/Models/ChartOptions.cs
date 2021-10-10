@@ -37,5 +37,6 @@ namespace TradingView.Blazor.Models
         // -- Marker
         public string MarkerBuyColor { get; set; } = "#2196F3";
         public string MarkerSellColor { get; set; } = "#e91e63";
+        public int MarkerSize { get; set; } = 1;
     }
 }
