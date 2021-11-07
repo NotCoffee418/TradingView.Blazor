@@ -72,7 +72,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 ```csharp
 public async Task UpdateChart(ChartData updatedChartData) 
 {
-    await myChart.LoadChartAsync(updatedChartData);
+    await myChart.UpdateChartAsync(updatedChartData);
 }
 ```
 
