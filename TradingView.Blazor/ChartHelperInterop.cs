@@ -17,7 +17,6 @@ namespace TradingView.Blazor
     public class ChartHelperInterop : IAsyncDisposable
     {
         private readonly Lazy<Task<IJSObjectReference>> moduleTask;
-
         public ChartHelperInterop(IJSRuntime jsRuntime)
         {
             moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
@@ -32,8 +31,39 @@ namespace TradingView.Blazor
         /// <returns></returns>
         public async Task LoadChart(ElementReference eleRef, ChartData data, ChartOptions options)
         {
+            // Shape the data to be compatible with JS library
+            (object candleData, object volumeData, object markerData) =
+                ShapeChartData(data, options);
+
+            // Call loadChart JS function
+            var module = await moduleTask.Value;
+            await module.InvokeVoidAsync("loadChart", 
+                eleRef, eleRef.Id, candleData, volumeData, markerData, options);
+        }
+
+        public async Task UpdateChart(ElementReference eleRef, ChartData data, ChartOptions options)
+        {
+            // Shape updated data using cached options
+            (object candleData, object volumeData, object markerData) =
+                ShapeChartData(data, options);
+
+            // Call JS function
+            var module = await moduleTask.Value;
+            await module.InvokeVoidAsync(
+                "replaceChartData", eleRef.Id, candleData, volumeData, markerData);
+        }
+
+        /// <summary>
+        /// Shape data to be usable by JS
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        private (object candleData, object volumeData, object markerData) 
+            ShapeChartData(ChartData data, ChartOptions options)
+        {
             // Extract candle data
-            var candleData = data.CandleData
+            object candleData = data.CandleData
                 .Select(x => new
                 {
                     time = new DateTimeOffset(x.Time, TimeSpan.Zero).ToUnixTimeSeconds(),
@@ -44,7 +74,7 @@ namespace TradingView.Blazor
                 });
 
             // Extract volume data
-            var volumeData = data.CandleData
+            object volumeData = data.CandleData
                 .Select(x => new
                 {
                     time = new DateTimeOffset(x.Time, TimeSpan.Zero).ToUnixTimeSeconds(),
@@ -53,7 +83,7 @@ namespace TradingView.Blazor
                 });
 
             // Shape marker data
-            var markerData = data.MarkerData
+            object markerData = data.MarkerData
                 .Select(x => new
                 {
                     time = new DateTimeOffset(x.Time, TimeSpan.Zero).ToUnixTimeSeconds(),
@@ -67,10 +97,9 @@ namespace TradingView.Blazor
                     size = options.MarkerSize
                 });
 
-            var module = await moduleTask.Value;
-            await module.InvokeVoidAsync("loadChart", 
-                eleRef, candleData, volumeData, markerData, options);
+            return (candleData, volumeData, markerData);
         }
+
 
         public async ValueTask DisposeAsync()
         {
