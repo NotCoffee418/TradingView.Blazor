@@ -68,5 +68,13 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 }
 ```
 
+5\. Update the chart with new or added data by calling `LoadChartAsync()`
+```csharp
+public async Task UpdateChart(ChartData updatedChartData) 
+{
+    await myChart.LoadChartAsync(updatedChartData);
+}
+```
+
 ## Demo
 You can view the code to the demo's index page [here](https://github.com/NotCoffee418/TradingView.Blazor/blob/main/TradingView.Blazor.Demo/Pages/Index.razor).
