@@ -7,19 +7,49 @@
 @code {
     public ElementReference ChartElement { get; set; }
 
+    private ChartOptions CachedOptions { get; set; }
+    private bool ChartIsLoaded { get; set; } = false;
+
     /// <summary>
     /// Load a chart
     /// </summary>
     /// <param name="data">ChartData</param>
     /// <param name="options">optional styling options</param>
     /// <returns></returns>
-    public async Task LoadChartAsync(ChartData data, ChartOptions options)
+    public async Task LoadChartAsync(ChartData data, ChartOptions options = null)
     {
         // Use default options when none are provided
         if (options == null)
             options = new ChartOptions();
-        
+
+        // Cache options + set loaded
+        CachedOptions = options;
+        ChartIsLoaded = true;
+
+        // load chart
         ChartHelperInterop interop = new ChartHelperInterop(JSRuntime);
         await interop.LoadChart(ChartElement, data, options);
+    }
+
+    /// <summary>
+    /// Update the chart
+    /// </summary>
+    /// <param name="data">Updated ChartData</param>
+    /// <param name="options">optional styling options</param>
+    /// <returns></returns>
+    public async Task UpdateChartAsync(ChartData data, ChartOptions options = null)
+    {
+        // Ensure chart is already loaded()
+        if (!ChartIsLoaded)
+            throw new Exception("Attempted to call UpdateChartAsync before calling LoadChartAsync.");
+
+        // Get from cache or update cache
+        if (options == null)
+            options = CachedOptions;
+        else CachedOptions = options;
+
+        // Update chart
+        ChartHelperInterop interop = new ChartHelperInterop(JSRuntime);
+        await interop.UpdateChart(ChartElement, data, options);
     }
 }
