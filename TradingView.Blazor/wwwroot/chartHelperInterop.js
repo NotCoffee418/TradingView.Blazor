@@ -47,7 +47,13 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 		wickUpColor: 'rgb(38,166,154)',
 		wickDownColor: 'rgb(255,82,82)',
 		borderVisible: true,
+		priceFormat: {
+			type: 'price',
+			precision: chartOptions.rightPriceScaleDecimalPrecision,
+			minMove: 1 / (10 ** chartOptions.rightPriceScaleDecimalPrecision),
+		}
 	});
+	console.log(chartOptions);
 
 	// Define volume for chart layout
 	var volumeSeries = window.charts[chartRefId].addHistogramSeries({
