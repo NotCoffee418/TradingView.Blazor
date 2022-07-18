@@ -78,3 +78,19 @@ public async Task UpdateChart(ChartData updatedChartData)
 
 ## Demo
 You can view the code to the demo's index page [here](https://github.com/NotCoffee418/TradingView.Blazor/blob/main/TradingView.Blazor.Demo/Pages/Index.razor).
+
+## Advanced
+### Custom Definitions
+When creating a chart, you can pass in custom definitions that to be interpreted by the native TradingView Lightweight library like so:
+```csharp
+var options = new ChartOptions();
+
+// CustomChartDefinitions are interpreted by the library's createChart()
+options.CustomChartDefinitions["height"] = 500;
+
+// CustomCandleSeriesDefinitions are interpreted by the library's addCandlestickSeries()
+options.CustomCandleSeriesDefinitions["borderVisible"] = false;
+
+// CustomVolumeSeriesDefinitions are interpreted by the library's addHistogramSeries()
+options.CustomVolumeSeriesDefinitions["color"] = "#26a69a";
+```

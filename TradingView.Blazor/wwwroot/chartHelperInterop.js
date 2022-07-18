@@ -30,13 +30,14 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 			mode: LightweightCharts.CrosshairMode.Normal,
 		},
 		rightPriceScale: {
-			borderColor: chartOptions.RightPriceScaleBorderColor,
+			borderColor: chartOptions.rightPriceScaleBorderColor,
 		},
 		timeScale: {
 			borderColor: chartOptions.timeScaleBorderColor,
 			timeVisible: chartOptions.timeScaleTimeVisible,
 			secondsVisible: chartOptions.timeScaleSecondsVisible
 		},
+		...chartOptions.customChartDefinitions
 	});
 
 	// Define candle options
@@ -47,6 +48,12 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 		wickUpColor: 'rgb(38,166,154)',
 		wickDownColor: 'rgb(255,82,82)',
 		borderVisible: true,
+		priceFormat: {
+			type: 'price',
+			precision: chartOptions.rightPriceScaleDecimalPrecision,
+			minMove: 1 / (10 ** chartOptions.rightPriceScaleDecimalPrecision),
+		},
+		...chartOptions.customCandleSeriesDefinitions
 	});
 
 	// Define volume for chart layout
@@ -60,6 +67,7 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 			top: 0.8,
 			bottom: 0,
 		},
+		...chartOptions.customVolumeSeriesDefinitions
 	});
 
 	// Bind series to global scope for updating
@@ -85,7 +93,10 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 				window.charts[chartRefId].resize(chartElement.parentElement.offsetWidth - (chartOptions.width*-1), chartOptions.height);
 			}, 200);
 		}
-    }
+	}
+
+	// Fit the chart
+	window.charts[chartRefId].timeScale().fitContent();
 
     // success
 	return true;

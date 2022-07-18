@@ -37,6 +37,9 @@
 		{
 			TimeScaleSecondsVisible = false,
 
+			// Define precision for the dataset with sub-zero prices
+			RightPriceScaleDecimalPrecision = 8,
+
 			// Setting width to a negative value makes the chart responsive
 			Width = -75,
 		};
@@ -63,7 +66,7 @@
 		// Load the sample data
 		if (FullCandleData == null || FullMarkerData == null)
 		{
-			FullCandleData = chartService.GetSampleData();
+			FullCandleData = chartService.GetSmallSampleData();
 			FullMarkerData = chartService.GetSampleMarkers();
 		}
 

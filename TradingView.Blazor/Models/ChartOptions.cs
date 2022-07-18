@@ -24,6 +24,7 @@ namespace TradingView.Blazor.Models
 
         // -- RightPriceScale
         public string RightPriceScaleBorderColor { get; set; } = "rgba(197, 203, 206, 0.8)";
+        public int RightPriceScaleDecimalPrecision { get; set; } = 2;
 
         // -- Timescale
         public string TimeScaleBorderColor { get; set; } = "rgba(197, 203, 206, 0.8)";
@@ -38,5 +39,28 @@ namespace TradingView.Blazor.Models
         public string MarkerBuyColor { get; set; } = "#2196F3";
         public string MarkerSellColor { get; set; } = "#e91e63";
         public int MarkerSize { get; set; } = 1;
+
+        // -- Custom definitions
+        /// <summary>
+        /// Options defined here will be added to the chart when calling createChart()
+        /// Example usage:
+        /// options.CustomChartDefinitions["height"] = 500;
+        /// </summary>
+        public Dictionary<string, dynamic> CustomChartDefinitions { get; set; } = new();
+
+        /// <summary>
+        /// Options defined here will be added to the chart when calling addCandlestickSeries()
+        /// Example usage:
+        /// options.CustomCandleSeriesDefinitions["borderVisible"] = false;
+        /// </summary>
+        public Dictionary<string, dynamic> CustomCandleSeriesDefinitions { get; set; } = new();
+
+        /// <summary>
+        /// Options defined here will be added to the chart when calling addHistogramSeries()
+        /// Example usage:
+        /// options.CustomVolumeSeriesDefinitions["color"] = "#26a69a";
+        /// </summary>
+        public Dictionary<string, dynamic> CustomVolumeSeriesDefinitions { get; set; } = new();
+
     }
 }
