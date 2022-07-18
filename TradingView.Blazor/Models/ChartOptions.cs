@@ -46,21 +46,21 @@ namespace TradingView.Blazor.Models
         /// Example usage:
         /// options.CustomChartDefinitions["height"] = 500;
         /// </summary>
-        public Dictionary<string, dynamic> CustomChartDefinitions { get; } = new();
+        public Dictionary<string, dynamic> CustomChartDefinitions { get; set; } = new();
 
         /// <summary>
         /// Options defined here will be added to the chart when calling addCandlestickSeries()
         /// Example usage:
         /// options.CustomCandleSeriesDefinitions["borderVisible"] = false;
         /// </summary>
-        public Dictionary<string, dynamic> CustomCandleSeriesDefinitions { get; } = new();
+        public Dictionary<string, dynamic> CustomCandleSeriesDefinitions { get; set; } = new();
 
         /// <summary>
         /// Options defined here will be added to the chart when calling addHistogramSeries()
         /// Example usage:
         /// options.CustomVolumeSeriesDefinitions["color"] = "#26a69a";
         /// </summary>
-        public Dictionary<string, dynamic> CustomVolumeSeriesDefinitions { get; } = new();
+        public Dictionary<string, dynamic> CustomVolumeSeriesDefinitions { get; set; } = new();
 
     }
 }

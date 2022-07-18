@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingView.Blazor.Demo", "TradingView.Blazor.Demo\TradingView.Blazor.Demo.csproj", "{32EED803-D295-4A4A-A2F5-C2E566932281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingView.Blazor.Demo", "TradingView.Blazor.Demo\TradingView.Blazor.Demo.csproj", "{32EED803-D295-4A4A-A2F5-C2E566932281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingView.Blazor", "TradingView.Blazor\TradingView.Blazor.csproj", "{72EDBD19-5FB8-47D2-BFD1-B72B61D129C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingView.Blazor", "TradingView.Blazor\TradingView.Blazor.csproj", "{72EDBD19-5FB8-47D2-BFD1-B72B61D129C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{407FD813-DDB6-4FF1-9F20-74C65B8B4E94}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
