@@ -93,7 +93,10 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 				window.charts[chartRefId].resize(chartElement.parentElement.offsetWidth - (chartOptions.width*-1), chartOptions.height);
 			}, 200);
 		}
-    }
+	}
+
+	// Fit the chart
+	window.charts[chartRefId].timeScale().fitContent();
 
     // success
 	return true;
