@@ -30,13 +30,14 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 			mode: LightweightCharts.CrosshairMode.Normal,
 		},
 		rightPriceScale: {
-			borderColor: chartOptions.RightPriceScaleBorderColor,
+			borderColor: chartOptions.rightPriceScaleBorderColor,
 		},
 		timeScale: {
 			borderColor: chartOptions.timeScaleBorderColor,
 			timeVisible: chartOptions.timeScaleTimeVisible,
 			secondsVisible: chartOptions.timeScaleSecondsVisible
 		},
+		...chartOptions.customChartDefinitions
 	});
 
 	// Define candle options
@@ -51,9 +52,9 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 			type: 'price',
 			precision: chartOptions.rightPriceScaleDecimalPrecision,
 			minMove: 1 / (10 ** chartOptions.rightPriceScaleDecimalPrecision),
-		}
+		},
+		...chartOptions.customCandleSeriesDefinitions
 	});
-	console.log(chartOptions);
 
 	// Define volume for chart layout
 	var volumeSeries = window.charts[chartRefId].addHistogramSeries({
@@ -66,6 +67,7 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 			top: 0.8,
 			bottom: 0,
 		},
+		...chartOptions.customVolumeSeriesDefinitions
 	});
 
 	// Bind series to global scope for updating
