@@ -8,7 +8,7 @@ Simple component for basic TradingView chart in Blazor supporting OHLC candle, v
 
 ## Getting Started
 
-1\. Include TradingView's lightweight-charts library in the `<head>`section of your _Host.cs file:
+1\. Include TradingView's lightweight-charts library in the `<head>`section of your `_Host.cs` for Blazor Server or `wwwroot/index.html` for WebAssembly file:
 ```html
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 ```

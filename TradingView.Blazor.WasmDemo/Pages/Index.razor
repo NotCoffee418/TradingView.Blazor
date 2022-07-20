@@ -1,9 +1,40 @@
 ﻿@page "/"
+@using TradingView.Blazor.WasmDemo.Data
+@using TradingView.Blazor.Models
+@inject ChartService chartService
 
-<PageTitle>Index</PageTitle>
+<h1>TradingView.Blazor Wasm Demo</h1>
 
-<h1>Hello, world!</h1>
+<TradingViewChart @ref=myChart />
 
-Welcome to your new app.
+@code {
+	// Define and load the chart
+	TradingViewChart? myChart;
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		// Only on first render
+		if (!firstRender)
+			return;
+
+		// Load the data
+		ChartData data = new()
+		{
+			CandleData = await chartService.GetSampleData(),
+			MarkerData = await chartService.GetSampleMarkers()
+		};
+
+		// Optionally define options
+		ChartOptions options = new()
+		{
+			TimeScaleSecondsVisible = false,
+
+			// Setting width to a negative value makes the chart responsive
+			Width = -75,
+		};
+
+		// Load the chart
+		if (myChart != null)
+			await myChart.LoadChartAsync(data, options);
+	}	
+}

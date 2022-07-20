@@ -1,0 +1,93 @@
+﻿@page "/updating-chart"
+@using TradingView.Blazor.WasmDemo.Data
+@using TradingView.Blazor.Models
+@inject ChartService chartService
+
+<h1>TradingView.Blazor Wasm Updating Chart</h1>
+
+<TradingViewChart @ref=myChart />
+<button class="btn btn-primary mt-2" @onclick="(async () => await AddMinuteAndUpdateAsync())">Add And Refresh Chart</button>
+
+
+@code {
+	// Define and load the chart
+	TradingViewChart? myChart;
+
+	List<Ohlcv> FullCandleData = null;
+	List<Marker> FullMarkerData = null;
+	DateTime NextMinuteToShow = DateTime.MinValue;
+	ChartData data;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		// Only on first render
+		if (!firstRender)
+			return;
+
+		// Set initial data
+		(var initialOhlcv, var initialMarkers) = await GetNextDataAsync(60);
+		data = new()
+		{
+			CandleData = initialOhlcv,
+			MarkerData = initialMarkers,
+		};
+
+		// Optionally define options
+		ChartOptions options = new()
+		{
+			TimeScaleSecondsVisible = false,
+
+			// Define precision for the dataset with sub-zero prices
+			RightPriceScaleDecimalPrecision = 8,
+
+			// Setting width to a negative value makes the chart responsive
+			Width = -75,
+		};
+
+		// Load the chart
+		if (myChart != null)
+			await myChart.LoadChartAsync(data, options);
+	}
+
+	private async Task AddMinuteAndUpdateAsync()
+	{
+		// Append the new data to our ChartData
+		(var priceDataToAppend, var markerDataToAppend) = await GetNextDataAsync();
+		data.CandleData.AddRange(priceDataToAppend);
+		data.MarkerData.AddRange(markerDataToAppend);
+
+		// Refresh Chart
+		await myChart.UpdateChartAsync(data);
+	}
+
+	// Get the next chunk of X minutes from the sample data 
+	private async Task<(List<Ohlcv>, List<Marker>)> GetNextDataAsync(int minutes = 1)
+	{
+		// Load the sample data
+		if (FullCandleData == null || FullMarkerData == null)
+		{
+			FullCandleData = await chartService.GetSmallSampleData();
+			FullMarkerData = await chartService.GetSampleMarkers();
+		}
+
+		// Ensure that we have a valid NextMinuteToShow
+		if (NextMinuteToShow == DateTime.MinValue)
+			NextMinuteToShow = FullCandleData.First().Time;
+
+		// Select the data we need
+		List<Ohlcv> outputPriceData = FullCandleData
+			.Where(x => x.Time >= NextMinuteToShow)
+			.Where(x => x.Time < NextMinuteToShow.AddMinutes(minutes))
+			.ToList();
+		List<Marker> outputMarkerData = FullMarkerData
+			.Where(x => x.Time >= NextMinuteToShow)
+			.Where(x => x.Time < NextMinuteToShow.AddMinutes(minutes))
+			.ToList();
+
+		// Update the next data to show value
+		NextMinuteToShow = NextMinuteToShow.AddMinutes(minutes + 1);
+
+		// return result
+		return (outputPriceData, outputMarkerData);		
+	}
+}
