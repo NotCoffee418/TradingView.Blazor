@@ -1,24 +1,31 @@
 # TradingView.Blazor
+
 [![Nuget](https://img.shields.io/nuget/v/TradingView.Blazor?style=for-the-badge "Nuget")](https://www.nuget.org/packages/TradingView.Blazor)
 
 Simple component for basic TradingView chart in Blazor supporting OHLC candle, volume and markers.
 
 ## Preview
+
+[View the demo](https://tradingview-blazor.pages.dev/)
+
 ![image](https://user-images.githubusercontent.com/9306304/130491761-77235d05-e079-4b32-a498-e88cedca8f06.png)
 
 ## Getting Started
 
 1\. Include TradingView's lightweight-charts library in the `<head>`section of your `_Host.cs` for Blazor Server or `wwwroot/index.html` for WebAssembly file:
+
 ```html
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 ```
 
 2a\. Add the chart to your page where you would like the chart to display with a reference:
+
 ```html
 <TradingViewChart @ref=myChart />
 ```
 
 2b\. Define the reference in the `@code` section of your razor page
+
 ```csharp
 @code {
 	TradingViewChart? myChart;
@@ -26,6 +33,7 @@ Simple component for basic TradingView chart in Blazor supporting OHLC candle, v
 ```
 
 3\. Prepare your data in the format of `List<TradingView.Blazor.Models.Ohlcv>`
+
 ```csharp
 public class Ohlcv
 {
@@ -39,6 +47,7 @@ public class Ohlcv
 ```
 
 4\. Load the chart after render
+
 ```csharp
 protected override async Task OnAfterRenderAsync(bool firstRender)
 {
@@ -69,6 +78,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
 ```
 
 5\. Update the chart with new or added data by calling `LoadChartAsync()`
+
 ```csharp
 public async Task UpdateChart(ChartData updatedChartData) 
 {
@@ -77,10 +87,13 @@ public async Task UpdateChart(ChartData updatedChartData)
 ```
 
 ## Demo
+
 You can view the code to the demo's index page [here](https://github.com/NotCoffee418/TradingView.Blazor/blob/main/TradingView.Blazor.Demo/Pages/Index.razor).
 
 ## Advanced
+
 ### Custom Definitions
+
 When creating a chart, you can pass in custom definitions that to be interpreted by the native TradingView Lightweight library like so:
 ```csharp
 var options = new ChartOptions();
