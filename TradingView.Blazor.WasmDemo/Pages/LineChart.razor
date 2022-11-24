@@ -25,7 +25,7 @@
 			return;
 
 		// Set initial data
-		(var initialData, var initialMarkers) = await GetNextDataAsync(60);
+		(List<PricePoint> initialData, var initialMarkers) = await GetNextDataAsync(60);
 		data = new()
 		{
 			ChartEntries = new(initialData),
@@ -66,7 +66,7 @@
 		// Load the sample data
 		if (FullCandleData == null || FullMarkerData == null)
 		{
-			FullCandleData = new List<IChartEntry>(await chartService.GetSmallSampleData());
+			FullCandleData = new List<IChartEntry>(await chartService.GetSampleLineData());
 			FullMarkerData = await chartService.GetSampleMarkers();
 		}
 
