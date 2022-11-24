@@ -20,7 +20,8 @@
 		// Load the data
 		ChartData data = new()
 		{
-			CandleData = chartService.GetSampleData(),
+			ChartEntries = chartService.GetSampleData()
+				.Cast<IChartEntry>().ToList(),
 			MarkerData = chartService.GetSampleMarkers()
 		};
 

@@ -1,9 +1,9 @@
-﻿@page "/updating-chart"
-@using TradingView.Blazor.WasmDemo.Data
+﻿@page "/line-chart"
+@using TradingView.Blazor.Demo.Data
 @using TradingView.Blazor.Models
 @inject ChartService chartService
 
-<h1>TradingView.Blazor Wasm Updating Chart</h1>
+<h1>TradingView.Blazor Updating Chart</h1>
 
 <TradingViewChart @ref=myChart />
 <button class="btn btn-primary mt-2" @onclick="(async () => await AddMinuteAndUpdateAsync())">Add And Refresh Chart</button>
@@ -13,7 +13,7 @@
 	// Define and load the chart
 	TradingViewChart? myChart;
 
-	List<IChartEntry> FullCandleData = null;
+	List<PricePoint> FullPriceData = null;
 	List<Marker> FullMarkerData = null;
 	DateTime NextMinuteToShow = DateTime.MinValue;
 	ChartData data;
@@ -25,10 +25,10 @@
 			return;
 
 		// Set initial data
-		(var initialOhlcv, var initialMarkers) = await GetNextDataAsync(60);
+		(var initialData, var initialMarkers) = GetNextData(60);
 		data = new()
 		{
-			ChartEntries = new(initialOhlcv),
+			ChartEntries = new(initialData),
 			MarkerData = initialMarkers,
 		};
 
@@ -52,7 +52,7 @@
 	private async Task AddMinuteAndUpdateAsync()
 	{
 		// Append the new data to our ChartData
-		(var priceDataToAppend, var markerDataToAppend) = await GetNextDataAsync();
+		(var priceDataToAppend, var markerDataToAppend) = GetNextData();
 		data.ChartEntries.AddRange(priceDataToAppend);
 		data.MarkerData.AddRange(markerDataToAppend);
 
@@ -61,24 +61,23 @@
 	}
 
 	// Get the next chunk of X minutes from the sample data 
-	private async Task<(List<Ohlcv>, List<Marker>)> GetNextDataAsync(int minutes = 1)
+	private (List<PricePoint>, List<Marker>) GetNextData(int minutes = 1)
 	{
 		// Load the sample data
-		if (FullCandleData == null || FullMarkerData == null)
+		if (FullPriceData == null || FullMarkerData == null)
 		{
-			FullCandleData = new List<IChartEntry>(await chartService.GetSmallSampleData());
-			FullMarkerData = await chartService.GetSampleMarkers();
+			FullPriceData = chartService.GetSampleLineData();
+			FullMarkerData = chartService.GetSampleMarkers();
 		}
 
 		// Ensure that we have a valid NextMinuteToShow
 		if (NextMinuteToShow == DateTime.MinValue)
-			NextMinuteToShow = FullCandleData.First().Time;
+			NextMinuteToShow = FullPriceData.First().Time;
 
 		// Select the data we need
-		List<Ohlcv> outputPriceData = FullCandleData
+		List<PricePoint> outputPriceData = FullPriceData
 			.Where(x => x.Time >= NextMinuteToShow)
 			.Where(x => x.Time < NextMinuteToShow.AddMinutes(minutes))
-			.Cast<Ohlcv>()
 			.ToList();
 		List<Marker> outputMarkerData = FullMarkerData
 			.Where(x => x.Time >= NextMinuteToShow)

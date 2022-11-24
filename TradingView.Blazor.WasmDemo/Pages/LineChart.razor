@@ -1,4 +1,4 @@
-﻿@page "/updating-chart"
+﻿@page "/line-chart"
 @using TradingView.Blazor.WasmDemo.Data
 @using TradingView.Blazor.Models
 @inject ChartService chartService
@@ -25,10 +25,10 @@
 			return;
 
 		// Set initial data
-		(var initialOhlcv, var initialMarkers) = await GetNextDataAsync(60);
+		(var initialData, var initialMarkers) = await GetNextDataAsync(60);
 		data = new()
 		{
-			ChartEntries = new(initialOhlcv),
+			ChartEntries = new(initialData),
 			MarkerData = initialMarkers,
 		};
 
@@ -61,7 +61,7 @@
 	}
 
 	// Get the next chunk of X minutes from the sample data 
-	private async Task<(List<Ohlcv>, List<Marker>)> GetNextDataAsync(int minutes = 1)
+	private async Task<(List<PricePoint>, List<Marker>)> GetNextDataAsync(int minutes = 1)
 	{
 		// Load the sample data
 		if (FullCandleData == null || FullMarkerData == null)
@@ -75,10 +75,10 @@
 			NextMinuteToShow = FullCandleData.First().Time;
 
 		// Select the data we need
-		List<Ohlcv> outputPriceData = FullCandleData
+		List<PricePoint> outputPriceData = FullCandleData
 			.Where(x => x.Time >= NextMinuteToShow)
 			.Where(x => x.Time < NextMinuteToShow.AddMinutes(minutes))
-			.Cast<Ohlcv>()
+			.Cast<PricePoint>()
 			.ToList();
 		List<Marker> outputMarkerData = FullMarkerData
 			.Where(x => x.Time >= NextMinuteToShow)

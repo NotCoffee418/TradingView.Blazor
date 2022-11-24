@@ -1,10 +1,10 @@
-name: CICD
+name: Test
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches:
+    - main
+    - dev
 
 jobs:
 
@@ -25,7 +25,3 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Pack
-      run: dotnet pack --no-build --configuration Release TradingView.Blazor/TradingView.Blazor.csproj --output .
-    - name: Publish to Nuget
-      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
