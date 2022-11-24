@@ -13,7 +13,8 @@ public class Enums
     
     public enum ChartType
     {
-        Candlestick = 0,
-        Line = 1,
+        Unspecified = 0,
+        Candlestick = 1,
+        Line = 2,
     }
 }

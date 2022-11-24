@@ -1,5 +1,3 @@
-using System;
-
 namespace TradingView.Blazor.Models;
 
 public class PricePoint : IChartEntry
