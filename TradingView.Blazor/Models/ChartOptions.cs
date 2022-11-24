@@ -32,6 +32,9 @@ public class ChartOptions
     public string MarkerBuyColor { get; set; } = "#2196F3";
     public string MarkerSellColor { get; set; } = "#e91e63";
     public int MarkerSize { get; set; } = 1;
+    
+    // -- Line style
+    public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
     // -- Custom definitions
     /// <summary>
@@ -47,6 +50,13 @@ public class ChartOptions
     /// options.CustomCandleSeriesDefinitions["borderVisible"] = false;
     /// </summary>
     public Dictionary<string, dynamic> CustomCandleSeriesDefinitions { get; set; } = new();
+    
+    /// <summary>
+    /// Options defined here will be added to the chart when calling addLineSeries()
+    /// Example usage:
+    /// options.CustomLineSeriesDefinitions["borderVisible"] = false;
+    /// </summary>
+    public Dictionary<string, dynamic> CustomLineSeriesDefinitions { get; set; } = new();
 
     /// <summary>
     /// Options defined here will be added to the chart when calling addHistogramSeries()

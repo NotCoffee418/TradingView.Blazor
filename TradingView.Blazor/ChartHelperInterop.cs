@@ -80,7 +80,7 @@ public class ChartHelperInterop : IAsyncDisposable
                 .Select(x => new
                 {
                     time = new DateTimeOffset(x.Time, TimeSpan.Zero).ToUnixTimeSeconds(),
-                    price = x.Price,
+                    value = x.Price,
                 });
         }
         else throw new NullReferenceException("No candle or line data is defined.");

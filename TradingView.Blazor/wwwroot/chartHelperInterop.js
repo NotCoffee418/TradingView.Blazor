@@ -1,6 +1,6 @@
 window.charts = {};
 
-export function loadChart(chartElement, chartRefId, chartType, candleData, volumeData, markerData, chartOptions) {
+export function loadChart(chartElement, chartRefId, chartType, mainSeriesData, volumeData, markerData, chartOptions) {
 	if (chartElement == null) {
 		console.error("ChartElement was null. Please define a reference for your TradingViewChart element.");
 		return;
@@ -40,23 +40,45 @@ export function loadChart(chartElement, chartRefId, chartType, candleData, volum
 		...chartOptions.customChartDefinitions
 	});
 
-	// Define candle options
 	// Define chart layout
-	window.charts[chartRefId]["CandleSeries"] = window.charts[chartRefId].addCandlestickSeries({
-		upColor: 'rgb(38,166,154)',
-		downColor: 'rgb(255,82,82)',
-		wickUpColor: 'rgb(38,166,154)',
-		wickDownColor: 'rgb(255,82,82)',
-		borderVisible: true,
-		priceFormat: {
-			type: 'price',
-			precision: chartOptions.rightPriceScaleDecimalPrecision,
-			minMove: 1 / (10 ** chartOptions.rightPriceScaleDecimalPrecision),
-		},
-		...chartOptions.customCandleSeriesDefinitions
-	});
-	window.charts[chartRefId]["CandleSeries"].setData(candleData);
-	console.log(chartType);
+	if (chartType === 1) // Candle
+	{
+		window.charts[chartRefId]["MainSeries"] = window.charts[chartRefId].addCandlestickSeries({
+			upColor: 'rgb(38,166,154)',
+			downColor: 'rgb(255,82,82)',
+			wickUpColor: 'rgb(38,166,154)',
+			wickDownColor: 'rgb(255,82,82)',
+			borderVisible: true,
+			priceFormat: {
+				type: 'price',
+				precision: chartOptions.rightPriceScaleDecimalPrecision,
+				minMove: 1 / (10 ** chartOptions.rightPriceScaleDecimalPrecision),
+			},
+			...chartOptions.customCandleSeriesDefinitions
+		});
+		window.charts[chartRefId]["MainSeries"].setData(mainSeriesData);
+	}
+	else if (chartType === 2) // Line
+	{
+		window.charts[chartRefId]["MainSeries"] = window.charts[chartRefId].addLineSeries({
+			color: '#00C',
+			lineWidth: 2,
+			lineStyle: chartOptions.lineStyle,
+			axisLabelVisible: true,
+			borderVisible: true,
+			priceFormat: {
+				type: 'price',
+				precision: chartOptions.rightPriceScaleDecimalPrecision,
+				minMove: 1 / (10 ** chartOptions.rightPriceScaleDecimalPrecision),
+			},
+			...chartOptions.customLineSeriesDefinitions
+		});
+		window.charts[chartRefId]["MainSeries"].setData(mainSeriesData);
+		window.charts[chartRefId].timeScale().fitContent();
+	}
+	else console.error("ChartType was not defined or invalid. This is probably a C# bug.");
+	console.log(chartType)
+	
 
 	// Define volume for chart layout
 	window.charts[chartRefId]["VolumeSeries"] = window.charts[chartRefId].addHistogramSeries({
@@ -74,7 +96,7 @@ export function loadChart(chartElement, chartRefId, chartType, candleData, volum
 	window.charts[chartRefId]["VolumeSeries"].setData(volumeData);
 
 	// Bind data
-	window.charts[chartRefId]["CandleSeries"].setMarkers(markerData); // <- fix me
+	window.charts[chartRefId]["MainSeries"].setMarkers(markerData); // <- fix me
 
 	// Force resize if applicable
 	var timerID;
@@ -99,8 +121,8 @@ export function loadChart(chartElement, chartRefId, chartType, candleData, volum
 	return true;
 }
 
-export function replaceChartData(chartRefId, chartType, candleData, volumeData, markerData) {
-	window.charts[chartRefId]["CandleSeries"].setData(candleData);
+export function replaceChartData(chartRefId, chartType, mainSeriesData, volumeData, markerData) {
+	window.charts[chartRefId]["MainSeries"].setData(mainSeriesData);
 	window.charts[chartRefId]["VolumeSeries"].setData(volumeData);
-	window.charts[chartRefId]["CandleSeries"].setMarkers(markerData);
+	window.charts[chartRefId]["MainSeries"].setMarkers(markerData);
 }
