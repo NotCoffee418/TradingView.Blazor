@@ -58,7 +58,7 @@ protected override async Task OnAfterRenderAsync(bool firstRender)
     // Load the data
     ChartData data = new()
     {
-        CandleData = chartService.GetSampleData(),
+        ChartEntries = chartService.GetSampleData(),
         MarkerData = new(), // todo: NIY
     };
 

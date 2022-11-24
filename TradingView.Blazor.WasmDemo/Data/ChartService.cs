@@ -12,10 +12,10 @@ public class ChartService
     HttpClient _httpClient;
 
     public async Task<List<Ohlcv>> GetSmallSampleData()
-        => await ReadCsvAsync<Ohlcv>("sample-data/small-sample-data.csv");
+        => (await ReadCsvAsync<Ohlcv>("sample-data/small-sample-data.csv")).ToList();
 
     public async Task<List<Ohlcv>> GetSampleData()
-        => await ReadCsvAsync<Ohlcv>("sample-data/sample-data.csv");
+        => (await ReadCsvAsync<Ohlcv>("sample-data/sample-data.csv")).ToList();
 
     public async Task<List<Marker>> GetSampleMarkers()
         => await ReadCsvAsync<Marker>("sample-data/sample-markers.csv");

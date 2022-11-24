@@ -20,7 +20,7 @@
 		// Load the data
 		ChartData data = new()
 		{
-			CandleData = await chartService.GetSampleData(),
+			ChartEntries = new List<IChartEntry>(await chartService.GetSampleData()),
 			MarkerData = await chartService.GetSampleMarkers()
 		};
 

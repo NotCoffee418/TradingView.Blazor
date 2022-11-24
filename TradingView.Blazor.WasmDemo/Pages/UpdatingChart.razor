@@ -13,7 +13,7 @@
 	// Define and load the chart
 	TradingViewChart? myChart;
 
-	List<Ohlcv> FullCandleData = null;
+	List<IChartEntry> FullCandleData = null;
 	List<Marker> FullMarkerData = null;
 	DateTime NextMinuteToShow = DateTime.MinValue;
 	ChartData data;
@@ -28,7 +28,7 @@
 		(var initialOhlcv, var initialMarkers) = await GetNextDataAsync(60);
 		data = new()
 		{
-			CandleData = initialOhlcv,
+			ChartEntries = new(initialOhlcv),
 			MarkerData = initialMarkers,
 		};
 
@@ -53,7 +53,7 @@
 	{
 		// Append the new data to our ChartData
 		(var priceDataToAppend, var markerDataToAppend) = await GetNextDataAsync();
-		data.CandleData.AddRange(priceDataToAppend);
+		data.ChartEntries.AddRange(priceDataToAppend);
 		data.MarkerData.AddRange(markerDataToAppend);
 
 		// Refresh Chart
@@ -66,7 +66,7 @@
 		// Load the sample data
 		if (FullCandleData == null || FullMarkerData == null)
 		{
-			FullCandleData = await chartService.GetSmallSampleData();
+			FullCandleData = new List<IChartEntry>(await chartService.GetSmallSampleData());
 			FullMarkerData = await chartService.GetSampleMarkers();
 		}
 
@@ -78,6 +78,7 @@
 		List<Ohlcv> outputPriceData = FullCandleData
 			.Where(x => x.Time >= NextMinuteToShow)
 			.Where(x => x.Time < NextMinuteToShow.AddMinutes(minutes))
+			.Cast<Ohlcv>()
 			.ToList();
 		List<Marker> outputMarkerData = FullMarkerData
 			.Where(x => x.Time >= NextMinuteToShow)

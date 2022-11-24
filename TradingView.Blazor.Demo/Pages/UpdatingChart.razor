@@ -28,7 +28,7 @@
 		(var initialOhlcv, var initialMarkers) = GetNextData(60);
 		data = new()
 		{
-			CandleData = initialOhlcv,
+			ChartEntries = new(initialOhlcv),
 			MarkerData = initialMarkers,
 		};
 
@@ -53,7 +53,7 @@
 	{
 		// Append the new data to our ChartData
 		(var priceDataToAppend, var markerDataToAppend) = GetNextData();
-		data.CandleData.AddRange(priceDataToAppend);
+		data.ChartEntries.AddRange(priceDataToAppend);
 		data.MarkerData.AddRange(markerDataToAppend);
 
 		// Refresh Chart

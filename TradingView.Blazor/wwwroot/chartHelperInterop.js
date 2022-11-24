@@ -1,6 +1,6 @@
 window.charts = {};
 
-export function loadChart(chartElement, chartRefId, candleData, volumeData, markerData, chartOptions) {
+export function loadChart(chartElement, chartRefId, chartType, candleData, volumeData, markerData, chartOptions) {
 	if (chartElement == null) {
 		console.error("ChartElement was null. Please define a reference for your TradingViewChart element.");
 		return;
@@ -42,7 +42,7 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 
 	// Define candle options
 	// Define chart layout
-	var candleSeries = window.charts[chartRefId].addCandlestickSeries({
+	window.charts[chartRefId]["CandleSeries"] = window.charts[chartRefId].addCandlestickSeries({
 		upColor: 'rgb(38,166,154)',
 		downColor: 'rgb(255,82,82)',
 		wickUpColor: 'rgb(38,166,154)',
@@ -55,9 +55,11 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 		},
 		...chartOptions.customCandleSeriesDefinitions
 	});
+	window.charts[chartRefId]["CandleSeries"].setData(candleData);
+	console.log(chartType);
 
 	// Define volume for chart layout
-	var volumeSeries = window.charts[chartRefId].addHistogramSeries({
+	window.charts[chartRefId]["VolumeSeries"] = window.charts[chartRefId].addHistogramSeries({
 		color: '#26a69a',
 		priceFormat: {
 			type: 'volume',
@@ -69,15 +71,10 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 		},
 		...chartOptions.customVolumeSeriesDefinitions
 	});
-
-	// Bind series to global scope for updating
-	window.charts[chartRefId]["CandleSeries"] = candleSeries;
-	window.charts[chartRefId]["VolumeSeries"] = volumeSeries;
+	window.charts[chartRefId]["VolumeSeries"].setData(volumeData);
 
 	// Bind data
-	candleSeries.setData(candleData);
-	volumeSeries.setData(volumeData);
-	candleSeries.setMarkers(markerData);
+	window.charts[chartRefId]["CandleSeries"].setMarkers(markerData); // <- fix me
 
 	// Force resize if applicable
 	var timerID;
@@ -102,7 +99,7 @@ export function loadChart(chartElement, chartRefId, candleData, volumeData, mark
 	return true;
 }
 
-export function replaceChartData(chartRefId, candleData, volumeData, markerData) {
+export function replaceChartData(chartRefId, chartType, candleData, volumeData, markerData) {
 	window.charts[chartRefId]["CandleSeries"].setData(candleData);
 	window.charts[chartRefId]["VolumeSeries"].setData(volumeData);
 	window.charts[chartRefId]["CandleSeries"].setMarkers(markerData);
