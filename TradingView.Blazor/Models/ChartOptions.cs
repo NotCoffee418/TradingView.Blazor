@@ -8,7 +8,7 @@ public class ChartOptions
     public int Height { get; set; } = 300;
 
     // -- Layout
-    public string LayoutBackgroundColor { get; set; } = "#000000";
+    public string LayoutBackgroundColor { get; set; } = "#000";
     public string LayoutTextColor { get; set; } = "rgba(255, 255, 255, 0.9)";
 
     // -- Grid

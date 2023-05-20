@@ -15,7 +15,9 @@ export function loadChart(chartElement, chartRefId, chartType, mainSeriesData, v
 		height: chartOptions.height > 0 ?
 			chartOptions.height : 0,
 		layout: {
-			backgroundColor: chartOptions.layoutBackgroundColor,
+			background: {
+				color: chartOptions.layoutBackgroundColor,
+			},
 			textColor: chartOptions.layoutTextColor,
 		},
 		grid: {
@@ -77,7 +79,6 @@ export function loadChart(chartElement, chartRefId, chartType, mainSeriesData, v
 		window.charts[chartRefId].timeScale().fitContent();
 	}
 	else console.error("ChartType was not defined or invalid. This is probably a C# bug.");
-	console.log(chartType)
 	
 
 	// Define volume for chart layout
